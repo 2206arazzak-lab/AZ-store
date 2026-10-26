@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AZ STORE | Shop Online</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
+    header {
+      background: #172554;
+      color: white;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 { margin: 0; }
+    header span { font-size: 16px; }
+    .hero {
+      padding: 55px 8%;
+      background: #dbeafe;
+      text-align: center;
+    }
+    .hero h2 { font-size: 36px; margin: 0 0 12px; }
+    .hero p { font-size: 18px; }
+    .products {
+      padding: 35px 8%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 22px;
+    }
+    .product {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 3px 12px #0000000d;
+    }
+    .emoji { font-size: 60px; }
+    .product h3 { margin-bottom: 8px; }
+    .price { color: #1d4ed8; font-size: 21px; font-weight: bold; }
+    button {
+      background: #2563eb;
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 18px;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    #cart {
+      margin: 0 8% 35px;
+      padding: 22px;
+      background: white;
+      border-radius: 12px;
+    }
+    footer {
+      background: #172554;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AZ STORE</h1>
+    <span>🛒 Cart: <strong id="cart-count">0</strong></span>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to AZ STORE</h2>
+    <p>Your one-stop shop for everyday essentials.</p>
+    <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+      Shop Now
+    </button>
+  </section>
+
+  <main>
+    <section class="products" id="products">
+      <article class="product">
+        <div class="emoji">🎧</div>
+        <h3>Wireless Headphones</h3>
+        <p>Enjoy your favorite music.</p>
+        <p class="price">₹1,499</p>
+        <button onclick="addToCart('Wireless Headphones', 1499)">Add to Cart</button>
+      </article>
+
+      <article class="product">
+        <div class="emoji">⌚</div>
+        <h3>Smart Watch</h3>
+        <p>Style meets technology.</p>
+        <p class="price">₹2,499</p>
+        <button onclick="addToCart('Smart Watch', 2499)">Add to Cart</button>
+      </article>
+
+      <article class="product">
+        <div class="emoji">🎒</div>
+        <h3>Everyday Backpack</h3>
+        <p>Carry your essentials anywhere.</p>
+        <p class="price">₹999</p>
+        <button onclick="addToCart('Everyday Backpack', 999)">Add to Cart</button>
+      </article>
+    </section>
+
+    <section id="cart">
+      <h2>Your Shopping Cart</h2>
+      <ul id="cart-items"><li>Your cart is empty.</li></ul>
+      <h3>Total: ₹<span id="cart-total">0</span></h3>
+      <button onclick="clearCart()">Clear Cart</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 AZ STORE | DevOps Learning Project</p>
+  </footer>
+
+  <script>
+    let cart = [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      renderCart();
+    }
+
+    function renderCart() {
+      document.getElementById('cart-count').textContent = cart.length;
+      const list = document.getElementById('cart-items');
+      list.innerHTML = '';
+
+      if (cart.length === 0) {
+        list.innerHTML = '<li>Your cart is empty.</li>';
+      } else {
+        cart.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = `${item.name} - ₹${item.price.toLocaleString('en-IN')}`;
+          list.appendChild(li);
+        });
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById('cart-total').textContent =
+        total.toLocaleString('en-IN');
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCart();
+    }
+  </script>
+</body>
+</html>
