@@ -1,0 +1,33 @@
+
+name: AZ STORE CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: sudo docker build -t az-store:latest .
+
+      - name: Replace running container
+        run: |
+          sudo docker rm -f az-store-container || true
+          sudo docker run -d \
+            --name az-store-container \
+            -p 8080:80 \
+            --restart unless-stopped \
+            az-store:latest
+
+      - name: Verify deployment
+        run: |
+          sleep 5
+          curl --fail http://localhost:8080
